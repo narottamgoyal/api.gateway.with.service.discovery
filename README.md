@@ -34,9 +34,3 @@ or
 ```sc.exe create "Consul" binPath= "d:\\workspace\\consul\\Consul.exe agent -config-dir=d:\\workspace\\consul" start= auto```
 
 ```sc.exe start "Consul"```
-
-References:
-
-https://ocelot.readthedocs.io/en/latest/features/servicediscovery.html
-
-https://www.c-sharpcorner.com/article/building-api-gateway-using-ocelot-in-asp-net-core-service-discovery-consul/
