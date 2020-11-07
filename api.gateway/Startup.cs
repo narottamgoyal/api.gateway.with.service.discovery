@@ -57,6 +57,7 @@ namespace api.gateway
             }
             app.UseMvc();
             app.UseOcelot().Wait();
+            app.UseMiddleware<CustomMiddleware>();
         }
     }
 }
