@@ -31,6 +31,6 @@ or
 
 # Install consul as windows services
 
-```sc.exe create "Consul" binPath= "d:\\workspace\\consul\\Consul.exe agent -config-dir=d:\\workspace\\consul" start= auto```
+```sc.exe create "Consul" binPath= "d:\\workspace\\consul\\Consul.exe agent -config-dir=d:\\workspace\\consul\\config" start= auto```
 
 ```sc.exe start "Consul"```
