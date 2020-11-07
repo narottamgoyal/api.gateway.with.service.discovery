@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Provider.Consul;
 
 namespace api.gateway
 {
+    public class Constants
+    {
+        public const string Authority = "http://localhost:5000";
+        public const string ApiResourceName = "api.portfolio.manager.v1";
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,8 +27,25 @@ namespace api.gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddOcelot()
-                .AddConsul();
+            
+            //Action<IdentityServerAuthenticationOptions> options = o =>
+            //{
+            //    o.Authority = "http://localhost:5000";
+            //    o.ApiName = "api.portfolio.manager.v1";
+            //    o.SupportedTokens = SupportedTokens.Both;
+            //    o.ApiSecret = "secret";
+            //};
+
+            var authenticationProviderKey = "TestKey";
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication(authenticationProviderKey, options =>
+                {
+                    options.Authority = Constants.Authority;
+                    options.RequireHttpsMetadata = false;
+                    // ApiResourceName
+                    options.ApiName = Constants.ApiResourceName;
+                });
+            services.AddOcelot();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

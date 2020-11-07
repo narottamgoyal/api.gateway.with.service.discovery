@@ -10,7 +10,11 @@
       },
       "UpstreamPathTemplate": "/gateway/{url}",
       "UpstreamHttpMethod": [ "Get" ],
-      "ReRoutesCaseSensitive": false
+      "ReRoutesCaseSensitive": false,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {
