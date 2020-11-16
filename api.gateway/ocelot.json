@@ -1,28 +1,40 @@
 {
   "ReRoutes": [
     {
-      "UseServiceDiscovery": true,
       "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "http",
-      "ServiceName": "WebApplication1",
-      "LoadBalancerOptions": {
-        "Type": "RoundRobin"
-      },
-      "UpstreamPathTemplate": "/gateway/{url}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/one/{url}",
       "UpstreamHttpMethod": [ "Get" ],
-      "ReRoutesCaseSensitive": false,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "TestKey",
-        "AllowedScopes": []
+        "AllowedScopes": [ "api.portfolio.manager.v1" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/two/{url}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": [ "api.portfolio.manager.v1" ]
+      },
+      "RouteClaimsRequirement": {
+        "CustomClaimName": "CustomClaimValue"
       }
     }
   ],
-  "GlobalConfiguration": {
-    "ServiceDiscoveryProvider": {
-      "Host": "localhost",
-      "Port": 8500,
-      "Type": "PollConsul",
-      "PollingInterval": 100
-    }
-  }
-}  
+  "GlobalConfiguration": {}
+}

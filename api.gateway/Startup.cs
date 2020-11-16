@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,17 +28,9 @@ namespace api.gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
-            //Action<IdentityServerAuthenticationOptions> options = o =>
-            //{
-            //    o.Authority = "http://localhost:5000";
-            //    o.ApiName = "api.portfolio.manager.v1";
-            //    o.SupportedTokens = SupportedTokens.Both;
-            //    o.ApiSecret = "secret";
-            //};
-
+           
             var authenticationProviderKey = "TestKey";
-            services.AddAuthentication()
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(authenticationProviderKey, options =>
                 {
                     options.Authority = Constants.Authority;
@@ -45,6 +38,7 @@ namespace api.gateway
                     // ApiResourceName
                     options.ApiName = Constants.ApiResourceName;
                 });
+
             services.AddOcelot();
         }
 
@@ -55,9 +49,10 @@ namespace api.gateway
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseMvc();
-            app.UseOcelot().Wait();
-            app.UseMiddleware<CustomMiddleware>();
+            app.UseAuthentication();
+            app.UseOcelot(new CustomMiddleware()).Wait();
         }
     }
 }
